@@ -1,0 +1,7 @@
+.vscode
+config.yaml
+inc/*
+eventos/*.txt
+chamados/*.txt
+atividades/*.txt
+venv/

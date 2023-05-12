@@ -1,9 +1,8 @@
 import yaml
-import datetime
 from pprint import pprint
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
-from google.auth.exceptions import RefreshError
+
 
 def load_google_calendar_credentials():
     with open('config.yaml', 'r') as file:
@@ -15,6 +14,7 @@ def load_google_calendar_credentials():
         api_version = config['GOOGLE_CALENDAR']['API_VERSION']
     
     return credentials_file, calendar_id, scopes, api_name, api_version
+
 
 def get_calendar_events(start_date, end_date):
     credentials_file, calendar_id, scopes, api_name, api_version = load_google_calendar_credentials()
@@ -36,6 +36,7 @@ def get_calendar_events(start_date, end_date):
         pprint(f'ID do Calendário: {calendar_id}')
 
     return []
+
 
 def generate_calendar_report(start_date, end_date):
     events = get_calendar_events(start_date, end_date)

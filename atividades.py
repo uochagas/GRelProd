@@ -30,7 +30,7 @@ def get_projects(gl, config):
     return gl.projects.list(all=True, get_all=True)
 
 
-def get_commits(project,config, year, month, ultimodia):
+def get_commits(project, config, year, month, ultimodia):
     useremail = config['GITLAB_EMAIL']
     commit_hashes = []
     commits = []
@@ -79,7 +79,6 @@ def get_user_activities(config, month, year, ultimodia):
     return activities
 
 
-def get_chamados(config, month, year, ultimodia):
         
     user = config['ID_USER']
     
@@ -115,7 +114,6 @@ def get_chamados(config, month, year, ultimodia):
     return chamados
 
 
-def write_chamados(chamados):
     #adicionando os chamados 
     texto = ""
     lista = list()
@@ -134,88 +132,45 @@ def write_chamados(chamados):
 
 
 def write_activities(activities):
-    
+
     # Se não houver atividades, sair da função
     if not activities:
         return
-    
+
     # Escrever as atividades no arquivo
     texto = ""
-    bloco = ""        
+    bloco = ""
     subbloco = ""
     for activity in activities:
         if bloco != activity['project']:
             bloco = activity['project']
-            texto +=(f"Project: {activity['project']}\n")             
+            texto += (f"Project: {activity['project']}\n")        
         if subbloco != activity['created_at']:
             subbloco = activity['created_at']
-            texto +=(f"     Em {activity['created_at']}\n")         
-        texto +=(f"          - {activity['message']}")
+            texto += (f"     Em {activity['created_at']}\n")         
+        texto += (f"          - {activity['message']}")
     return texto
-    
 
 
 def generate_report_git_suap(config, month, year, ultimodia):
-    
-            
-    chamados = get_chamados(config, month,year, ultimodia)
 
     # obtém atividades do GitLab
     activities = get_user_activities(config, month, year, ultimodia)
 
     # Salvar as atividades e chamados em arquivos de texto
     all_activities = write_activities(activities)
-    all_chamados = write_chamados(chamados)
 
     # Gerar o relatório consolidado
     print("Gerando relatório consolidado...")
-    consolidated_report = f"Relatório Atividades realizadas no Git para {month}/{year}\n\n"
-    consolidated_report += f"Atividades realizadas:\n"
-    consolidated_report += f"----------------------------------------------\n"
+    consolidated_report = "Relatório Atividades realizadas "
+    consolidated_report += f"no Git para {month}/{year}\n\n"
+    consolidated_report += "Atividades realizadas:\n"
+    consolidated_report += "----------------------------------------------\n"
     consolidated_report += f"{all_activities}\n"
 
     # Salvar o relatório consolidado em um arquivo de texto
-    filename = f"atividades/atividades_report_{month}_{year}.txt"
-    with open(filename, 'w') as file:
+    fname = f"{config['DIR_ATIVIDADES']}atividades_report_{month}_{year}.txt"
+    with open(fname, 'w') as file:
         file.write(consolidated_report)
 
-    print(f"Relatório consolidado salvo em {filename}.")
-
-
-# def main():
-#     # Verifica se foram passados argumentos na linha de comando
-#     if len(sys.argv) >= 3:
-#         month = sys.argv[1]
-#         year = sys.argv[2]
-#     else:
-#         # Obtém a data atual e subtrai um mês
-#         now = datetime.datetime.now()
-#         last_month = now - datetime.timedelta(days=30)
-#         month = last_month.strftime('%m')
-#         year = last_month.strftime('%Y')
-    
-#         # converte mês e ano para inteiros
-#     month = int(month)
-#     year = int(year)
-
-#     ultimodia = calendar.monthrange(year, month)[1]
-
-#     print(f"Gerando relatório para o mês {month}/{year}...")
-
-#     # carrega configurações
-#     yaml_path = "config.yaml"
-#     with open(yaml_path, 'r') as file:
-#         config = yaml.safe_load(file)
-        
-#     chamados = get_chamados(config, month,year, ultimodia)
-
-#     # obtém atividades do GitLab
-#     activities = get_user_activities(config, month, year, ultimodia)
-
-#     # gera relatório 
-#     generate_report_git_suap(config, activities, chamados, month, year)
-    
-#     generate_report_event(month, year, ultimodia)
-    
-# if __name__ == '__main__':
-#     main()
+    print(f"Relatório consolidado salvo em {fname}.")

@@ -24,8 +24,11 @@ GOOGLE_CALENDAR:
   API_NAME: "calendar"
   API_VERSION: "v3"
 
-# Dados do arquivo .ics baixado do Google Agenda
+# Dados dos arquivo 
 CALENDAR_ICS: "inc/calendar.ics"
+DIR_ATIVIDADES: "atividades/"
+DIR_CHAMADOS: "chamados/"
+DIR_EVENTOS: "eventos/"
 
 
 

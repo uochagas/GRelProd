@@ -10,31 +10,32 @@ def load_calendar_ics():
     with open('config.yaml', 'r') as file:
         config = yaml.safe_load(file)
         calendar_ics = config['CALENDAR_ICS']
-    
+
     return calendar_ics
 
+
 def get_events(calendar_ics, month, year, ultimodia):
-    
+
     print(f"Abrindo arquivo em {calendar_ics}...")
     # Abra o arquivo .ics e carregue o conteúdo
     with open(calendar_ics, 'r') as file:
         ics_content = file.read()
-    
+
     # Crie um objeto Calendar a partir do conteúdo do arquivo .ics
     calendar = Calendar.from_ical(ics_content)
-    
+
     # Defina o fuso horário
-    
+
     fuso_horario = pytz.timezone('America/Sao_Paulo')
 
     # Defina as datas inicial e final para filtragem
     data_inicial = datetime.datetime(year, month, 1)
     data_final = datetime.datetime(year, month, ultimodia)
-    
+
     # Converter as datas inicial e final para objetos Arrow com fuso horário
     data_inicial = arrow.get(data_inicial).replace(tzinfo=fuso_horario)
     data_final = arrow.get(data_final).replace(tzinfo=fuso_horario)
-    
+
     # Iterar sobre as linhas do arquivo .ics e filtrar eventos conforme necessário
     events = []
     print(f"Analisando agenda de {calendar_ics}")
@@ -54,8 +55,10 @@ def get_events(calendar_ics, month, year, ultimodia):
                 events.append(event)
     return events
 
+
 def write_events(events):
-    #adicionando os chamados 
+
+    # adicionando os chamados
     texto = ""
     bloco = "" 
     print(f"Ordenando e organizando {len(events)} eventos filtrados...")       
@@ -63,13 +66,16 @@ def write_events(events):
         dt = event['início'].format('DD/MM/YYYY')
         if bloco != dt:
             bloco = dt
-            texto +=(f"    Em {dt}:\n")             
-        texto +=(f"        - {event['título']} das {event['início'].format('HH:mm')} até às {event['fim'].format('HH:mm')}\n")
-    
+            texto += (f"    Em {dt}:\n")             
+        texto += (f"        - {event['título']} das " +
+                  "{event['início'].format('HH:mm')} até às " +
+                  "{event['fim'].format('HH:mm')}\n")
+
     return texto
 
-def generate_report_event(month, year, ultimodia):
-    
+
+def generate_report_event(config, month, year, ultimodia):
+
     print(f"Gerando de reuniões para o mês {month}/{year}...")
 
     # carrega configurações
@@ -83,15 +89,14 @@ def generate_report_event(month, year, ultimodia):
 
     # Gerar o relatório consolidado
     print("Gerando relatório consolidado...")
-    consolidated_report = f"Relatório de reuniões realizadas em {month}/{year}\n\n"
-    consolidated_report += f"----------------------------------------------\n"
+    consolidated_report = "Relatório de reuniões realizadas "
+    consolidated_report = f"em {month}/{year}\n\n"
+    consolidated_report += "----------------------------------------------\n"
     consolidated_report += f"{all_events}\n"
 
     # Salvar o relatório consolidado em um arquivo de texto
-    filename = f"eventos/events_report_{month}_{year}.txt"
+    filename = f"{config['DIR_EVENTOS']}events_report_{month}_{year}.txt"
     with open(filename, 'w') as file:
         file.write(consolidated_report)
-    
 
     print(f"Relatório de reuniões salvo em {filename}.")
-
