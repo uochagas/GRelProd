@@ -36,21 +36,24 @@ def get_events(calendar_ics, month, year, ultimodia):
     data_inicial = arrow.get(data_inicial).replace(tzinfo=fuso_horario)
     data_final = arrow.get(data_final).replace(tzinfo=fuso_horario)
 
-    # Iterar sobre as linhas do arquivo .ics e filtrar eventos conforme necessário
+    # Iterar sobre as linhas do arquivo .ics e
+    # filtrar eventos conforme necessário
     events = []
     print(f"Analisando agenda de {calendar_ics}")
     for component in tqdm(calendar.walk()):
         if component.name == 'VEVENT':
-            event_start = arrow.get(component.get('dtstart').dt).to(fuso_horario)
-            event_end = arrow.get(component.get('dtend').dt).to(fuso_horario)            
-            if (data_inicial <= event_start <= data_final and not component.get('class') == 'PRIVATE'):
+            event_start = arrow.get(
+                component.get('dtstart').dt).to(fuso_horario)
+            event_end = arrow.get(component.get('dtend').dt).to(fuso_horario)
+            if (data_inicial <= event_start <= data_final
+                and not component.get('class') == 'PRIVATE'):
                 event_title = component.get('summary')
                 event_duration = event_end - event_start
                 event = {
                     'título': event_title,
                     'início':event_start,
                     'fim': event_end,
-                    'duração': event_duration,                  
+                    'duração': event_duration,
                 }
                 events.append(event)
     return events
@@ -60,16 +63,14 @@ def write_events(events):
 
     # adicionando os chamados
     texto = ""
-    bloco = "" 
-    print(f"Ordenando e organizando {len(events)} eventos filtrados...")       
+    bloco = ""
+    print(f"Ordenando e organizando {len(events)} eventos filtrados...")
     for event in tqdm(sorted(events, key=lambda event: event['início'])):
         dt = event['início'].format('DD/MM/YYYY')
         if bloco != dt:
             bloco = dt
-            texto += (f"    Em {dt}:\n")             
-        texto += (f"        - {event['título']} das " +
-                  "{event['início'].format('HH:mm')} até às " +
-                  "{event['fim'].format('HH:mm')}\n")
+            texto += (f"    Em {dt}:\n")
+        texto += f"        - {event['título']}"
 
     return texto
 
