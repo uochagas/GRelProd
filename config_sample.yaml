@@ -3,6 +3,9 @@ GITLAB_URL: "https://git.com"
 GITLAB_USER: "Seu Usuário"
 GITLAB_EMAIL: "user@git.com"
 GITLAB_TOKEN: "xxxxx-yyyyyyyyyyyyyyy_hhhh"
+# Caso queira que todas as branch sejam analisada configure como  "0"
+# Caso deseje configurar um numero máximo informe.
+GITLAB_MAX_BRANCH: 20
 
 GITLAB_PROJETCTS:
   # - projeto1
@@ -24,11 +27,10 @@ GOOGLE_CALENDAR:
   API_NAME: "calendar"
   API_VERSION: "v3"
 
-# Dados dos arquivo 
+# Dados do arquivo .ics baixado do Google Agendas
 CALENDAR_ICS: "inc/calendar.ics"
+
+# Dados dos arquivo
 DIR_ATIVIDADES: "atividades/"
 DIR_CHAMADOS: "chamados/"
 DIR_EVENTOS: "eventos/"
-
-
-
