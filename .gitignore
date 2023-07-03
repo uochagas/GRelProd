@@ -5,3 +5,4 @@ eventos/*.txt
 chamados/*.txt
 atividades/*.txt
 venv/
+__pycache__/*

@@ -70,7 +70,7 @@ def write_events(events):
         if bloco != dt:
             bloco = dt
             texto += (f"    Em {dt}:\n")
-        texto += f"        - {event['título']}"
+        texto += (f"        - {event['título']}\n")
 
     return texto
 
