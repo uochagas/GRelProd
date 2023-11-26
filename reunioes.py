@@ -91,7 +91,7 @@ def generate_report_event(config, month, year, ultimodia):
     # Gerar o relatório consolidado
     print("Gerando relatório consolidado...")
     consolidated_report = "Relatório de reuniões realizadas "
-    consolidated_report = f"em {month}/{year}\n\n"
+    consolidated_report += f"em {month}/{year}\n\n"
     consolidated_report += "----------------------------------------------\n"
     consolidated_report += f"{all_events}\n"
 
