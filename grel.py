@@ -36,10 +36,10 @@ def main():
     generate_report_event(config, month, year, ultimodia)
 
     # gerar relatório de reuniões com base no arquivo ics
-    generate_report_chamados(config, month, year, ultimodia)
+    # generate_report_chamados(config, month, year, ultimodia)
 
     # gera relatório com base no git e no suap
-    generate_report_git_suap(config, month, year, ultimodia)
+    # generate_report_git_suap(config, month, year, ultimodia)
 
 
 if __name__ == '__main__':

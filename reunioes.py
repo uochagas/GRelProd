@@ -44,7 +44,13 @@ def get_events(calendar_ics, month, year, ultimodia):
         if component.name == 'VEVENT':
             event_start = arrow.get(
                 component.get('dtstart').dt).to(fuso_horario)
-            event_end = arrow.get(component.get('dtend').dt).to(fuso_horario)
+            # event_end = arrow.get(component.get('dtend').dt).to(fuso_horario)
+            # Verifique se 'dtend' existe no componente
+            if component.get('dtend') is not None:
+                event_end = arrow.get(component.get('dtend').dt).to(fuso_horario)
+            else:
+                # Defina um comportamento padrão ou ignore eventos sem 'dtend'
+                event_end = None  # ou outro comportamento adequado
             if (data_inicial <= event_start <= data_final
                 and not component.get('class') == 'PRIVATE'):
                 event_title = component.get('summary')
